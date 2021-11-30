@@ -1,0 +1,141 @@
+{% extends 'ackley/base.html' %}
+{% block Title %}Booking{% endblock Title %}
+{% block Head %}
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<style>
+    #cancel_booking {
+        width: 694px;
+        max-width: 100%;
+        border: 2px solid #513e00;
+    }
+    #book{
+        border:2px solid #513e00;
+    }
+</style>
+
+{% endblock Head %}
+
+{% block Body %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>{{message}}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+{% endif %}
+<br>
+<br>
+<!-- contact form -->
+
+
+<div class="col-md-6 wow animated mt-20 fadeInRight" data-wow-delay=".2s" id="book">
+    <h1 class="display-4 font-italic">Book Ackley Homestay</h1>
+    <p class="lead my-3">You can start booking From Below</p>
+    <br>
+    <form action="{% url 'ackley:booking' %}" class="shake mt-20" role="form" method="post" id="contactForm"
+        name="contact-form" data-toggle="validator">
+        {% csrf_token %}
+        <!--First Name -->
+        <div class="form-group label-floating">
+            <label class="control-label" for="name">First Name</label>
+            <input class="form-control" id="name" type="text" name="fname" required
+                data-error="Please enter your First name">
+            <div class="help-block with-errors"></div>
+        </div>
+        <!--Last Name -->
+        <div class="form-group label-floating">
+            <label class="control-label" for="name">Last Name</label>
+            <input class="form-control" id="name" type="text" name="lname" required
+                data-error="Please enter your Last name">
+            <div class="help-block with-errors"></div>
+        </div>
+        <!-- email -->
+        <div class="form-group label-floating">
+            <label class="control-label" for="email">Email</label>
+            <input class="form-control" id="email" type="email" name="email" required
+                data-error="Please enter your Email">
+            <div class="help-block with-errors"></div>
+        </div>
+        <!-- Phone Number-->
+        <div class="form-group label-floating">
+            <label class="control-label">Phone Number</label>
+            <input class="form-control" id="msg_subject" type="text" name="number" required
+                data-error="Please enter your Phone number">
+            <div class="help-block with-errors"></div>
+        </div>
+        <!--Arrival Date-->
+        <div class="form-group label-floating">
+            <label class="control-label">Arrival Date</label>
+            <input class="form-control" id="msg_subject" type="date" name="arrival" required
+                data-error="Please enter your date of Arrival">
+            <div class="help-block with-errors"></div>
+        </div>
+        <!--No of Guests-->
+        <div class="form-group label-floating">
+            <label class="control-label">No of Guests</label>
+            <input class="form-control" id="msg_subject" type="number" name="nguests" required
+                data-error="Please enter the number of Guests ">
+            <div class="help-block with-errors"></div>
+        </div>
+        <!--No of days-->
+        <div class="form-group label-floating">
+            <label class="control-label">No of days you will stay</label>
+            <input class="form-control" id="msg_subject" type="number" name="ndays" required
+                data-error="Please enter number of days you will stay">
+            <div class="help-block with-errors"></div>
+        </div>
+        <!-- Message -->
+        <div class="form-group label-floating">
+            <label for="message" class="control-label">Write additional detail about Your booking</label>
+            <textarea class="form-control" rows="3" id="message" name="Message" required
+                data-error="Describe about your booking"></textarea>
+            <div class="help-block with-errors"></div>
+        </div>
+        <!-- Form Submit -->
+        <div class="form-submit mt-5">
+            <button class="btn btn-primary" type="submit" name="booking"><i
+                    class="material-icons mdi mdi-message-outline"></i>Book Now</button>
+            <div id="msgSubmit" class="h3 text-center hidden"></div>
+            <div class="clearfix"></div>
+        </div>
+    </form>
+</div>
+
+
+
+<div class="b-example-divider bg-dark"></div>
+<div class="jumbotron p-1 p-md-5 text-white rounded bg-dark" id="cancel_booking">
+    <div class="col-md-9 px-0">
+        <h1 class="display-4 font-italic">Cancellation</h1>
+        <p class="lead my-3">You can cancel your booking From Below</p>
+        <form action="{% url 'ackley:booking' %}" class="shake mt-20" role="form" method="post" id="contactForm"
+            name="contact-form" data-toggle="validator">
+            {% csrf_token %}
+            <div class="form-group label-floating">
+                <label class="control-label" for="name">Booking ID</label>
+                <input class="form-control" id="name" type="text" name="bid" required
+                    data-error="Please enter your First name">
+                <div class="help-block with-errors"></div>
+            </div>
+            <div class="form-group label-floating">
+                <label for="message" class="control-label">Reason of your Cancellation</label>
+                <textarea class="form-control" rows="3" id="message" name="Message" required
+                    data-error="Describe about your booking"></textarea>
+                <div class="help-block with-errors"></div>
+            </div>
+            <div class="form-submit mt-5">
+                <button class="btn btn-Danger" type="submit" name="cancel"><i
+                        class="material-icons mdi mdi-message-outline"></i>Cancel</button>
+                <div id="msgSubmit" class="h3 text-center hidden"></div>
+                <div class="clearfix"></div>
+            </div>
+    </div>
+
+</div>
+
+{% endblock Body %}
