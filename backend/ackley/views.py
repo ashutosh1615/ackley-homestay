@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import redirect, render,get_object_or_404
 from django.http import HttpResponse,Http404,HttpResponseRedirect
-from .models import Bookings, Contacts
+from .models import Bookings, Contacts,Album
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
@@ -35,7 +35,8 @@ def index(request):
     return render(request,'ackley/index.html')
 
 def photo(request):
-    return render(request,'ackley/Photo.html')    
+    context={'object':Album.objects.all(),}
+    return render(request,'ackley/Photo.html',context)    
 
 def review(request):
     return render(request,'ackley/review.html')
@@ -47,6 +48,7 @@ def online_booking(request):
             q.save()
             messages.success(request,'Your Booking is Done , you will get a email with booking id')
             send_mail('Booking Successful',f"{request.POST.get('fname')} \n Your booking is successful for our ackley homestay and we will contact you soon",'Sudhirprakashbahuguna@gmail.com',[request.POST.get('email')],fail_silently=False)
+            send_mail(f"{request.POST.get('fname')} Booked",f"{request.POST.get('fname')} {request.POST.get('lname')} \n Booked your ackley homestay on {request.POST.get('arrival')}. \n Phone Number:{request.POST.get('number')} \n Email: {request.POST.get('email')} \n Number of Guests: {request.POST.get('nguests')} \n Number of days they will stay: {request.POST.get('ndays')}",'Sudhirprakashbahuguna@gmail.com','Sudhirprakashbahuguna@gmail.com',fail_silently=False)
         else:
             messages.warning(request,'You have already booked')
     return render(request,'ackley/booking.html')    
@@ -56,14 +58,12 @@ def contact(request):
         q=Contacts(Name=request.POST.get('Name'),Email=request.POST.get('Email'),Message=request.POST.get('Message'),date=timezone.now(),Phone_Number=request.POST.get('Phone'))
         q.save()
         messages.success(request,'You will be contacted soon')
-        send_mail(f"{request.POST.get('Name')} tried to contact'",f"Name: {request.POST['Name']}\n,Email:{request.POST['Email']},\n Phone:{request.POST['Phone']}\n Message: {request.POST['Message']}",'Sudhirprakashbahuguna@gmail.com',['Sudhirprakashbahuguna@gmail.com'])
+        send_mail(f"{request.POST.get('Name')} tried to contact",f"Name: {request.POST['Name']}\n Email:{request.POST['Email']},\n Phone:{request.POST['Phone']}\n Message: {request.POST['Message']}",'Sudhirprakashbahuguna@gmail.com',['Sudhirprakashbahuguna@gmail.com'])
     return render(request,'ackley/contact.html')
     
 # class DetailView(generic.DetailView):
 #     model=Question
 #     template_name = 'polls/detail.html'
-
-
 
 
 # def vote(request, question_id):

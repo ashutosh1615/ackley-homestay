@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models.deletion import CASCADE
-
-
+from PIL import Image
+from django_resized import ResizedImageField
 # Create your models here.
 
 class Contacts(models.Model):       
@@ -24,3 +24,11 @@ class Bookings(models.Model):
     No_of_days=models.IntegerField()
     def __str__(self):
         return self.First_name+' '+self.Last_name
+
+class Album(models.Model):
+    Img=ResizedImageField(size=[294, 225],upload_to='static/images')
+    Img_name=models.CharField(max_length=20)
+    Img_description=models.TextField()
+    def __str__(self) -> str:
+        return self.Img_name
+    
